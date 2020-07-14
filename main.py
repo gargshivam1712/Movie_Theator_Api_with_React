@@ -1,0 +1,1 @@
+from MovieTheator import app
