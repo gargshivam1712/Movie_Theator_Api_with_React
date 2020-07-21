@@ -6,6 +6,9 @@ import {BrowserRouter} from 'react-router-dom'
 
 import {store} from './store.js'
 import {Provider} from 'react-redux'
+import { profile } from './actions/auth'
+
+store.dispatch(profile())
 
 
 ReactDOM.render(

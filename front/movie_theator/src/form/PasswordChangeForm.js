@@ -3,11 +3,11 @@ import Message from "../messages/Message";
 import PropTypes from 'prop-types'
 import { FlushMessageDanger } from '../messages/FlushMessage'
 
-class LoginForm extends Component
+class PasswordChangeForm extends Component
 {
     state={
         data:{
-            username:'',
+            confirm_password:'',
             password:''
         },
         loading:false,
@@ -38,11 +38,11 @@ class LoginForm extends Component
 
     validate = (data)=>{
         const error = {};
-        if (!data.username) error.username="Username Must be required"
+        if (!data.confirm_password) error.confirm_password="Confirm Password Must be required"
         if (!data.password) error.password="Password Must be required"
+        if (data.password!==data.confirm_password) error.confirm_password="Confirm Password Must be same as Password"
         return error;
     }
-
     render()
     {
         const {data,error} = this.state;
@@ -51,24 +51,24 @@ class LoginForm extends Component
                 {
                     error.global && <FlushMessageDanger message={error.global} /> 
                 }
-                <div className='from-group'>
-                    <label htmlFor='username'>Username</label>
-                    <input type='text' name='username' id='username' placeholder='UserName' value={data.username} onChange={this.onChange} className='form-control'/>
-                </div>
-                <Message message={error.username}/>
-                <div className='from-group'>
+               <div className='from-group'>
                     <label htmlFor='password'>Password</label>
                     <input type='password' name='password' id='password' placeholder='Password' value={data.password} onChange={this.onChange} className='form-control'/>
                 </div>
                 <Message message={error.password}/>
+                <div className='from-group'>
+                    <label htmlFor='confirm_password'>Confirm Password</label>
+                    <input type='password' name='confirm_password' id='confirm_password' placeholder='Confirm Password' value={data.confirm_password} onChange={this.onChange} className='form-control'/>
+                </div>
+                <Message message={error.confirm_password}/>
                 <p><input type='submit' className='btn btn-primary' name='submit' /></p>
             </form>
         )
     }
 }
 
-LoginForm.propTypes = {
+PasswordChangeForm.propTypes = {
     submit : PropTypes.func.isRequired
 }
 
-export default LoginForm
+export default PasswordChangeForm

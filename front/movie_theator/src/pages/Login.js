@@ -3,25 +3,20 @@ import LoginForm from "../form/LoginForm"
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
-import {login} from '../actions/user'
+import { login } from '../actions/auth'
+
 
 
 class Login extends Component {
 
-    submit = data=>{
-        console.log(data)   
-        this.props.login(data)
-    }
+    submit = data=>this.props.login(data)
     render() {
-        console.log(this.props)
-        let redirect = '/'
-        if (this.props.history.location.state){
-            redirect=this.props.history.location.state.from.pathname
+        console.log(this.props.isAuthenticated)
+        if (this.props.isAuthenticated)
+        {
+            
+           return <Redirect to="/"/>
         }
-        if(this.props.auth.isAuthenticated)
-        return (<Redirect to={redirect} />)
-        
-        else
         return (
             <div className="container" >
                 Login Form<br/><br/>
@@ -31,9 +26,19 @@ class Login extends Component {
     }
 }
 
-const mapStatetoProps=(state)=>({
-    auth:state.auth
+const mapStatetoProps = (state)=>({
+    isAuthenticated : state.auth.isAuthenticated
 })
+
+Login.propTypes = {
+    login : PropTypes.func.isRequired,
+    histroy : PropTypes.shape({
+        push:PropTypes.func.isRequired
+    }),
+    isAuthenticated : PropTypes.bool.isRequired
+}
+
+
 
 
 export default connect(mapStatetoProps,{login})(Login)
