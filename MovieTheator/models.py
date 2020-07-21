@@ -12,6 +12,7 @@ class User(db.Model):
     email = Column(String,unique = True)
     phone_no = Column(Integer,unique = True)
     admin = Column(Boolean)
+    confirm = Column(Boolean,default=False)
     password = Column(String(150))
     
 

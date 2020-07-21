@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Message from '../messages/Message'
+import { FlushMessageDanger } from '../messages/FlushMessage'
 
 export default class RegisterForm extends Component {
     state={
@@ -29,7 +30,13 @@ export default class RegisterForm extends Component {
         this.setState({ error:error });
         if (Object.keys(error).length===0)
         {
-            this.props.submit(this.state.data);
+            this.setState({loading:true})
+            this.props.submit(this.state.data)
+            .catch(err=>{
+                console.log(err.response)
+                error.global = err.response.data.message
+                console.log(err.response.data.message)
+                this.setState({error:error,loading:false})})
         }
     }
 
@@ -50,6 +57,9 @@ export default class RegisterForm extends Component {
         const {data,error} = this.state;
         return (
             <form  onSubmit={this.onSubmit} >
+                 {
+                    error.global && <FlushMessageDanger message={error.global} /> 
+                }
                 <div className='from-group'>
                     <label htmlFor='username'>Username</label>
                     <input type='text' name='username' id='username' placeholder='UserName' value={data.username} onChange={this.onChange} className='form-control'/>
@@ -87,4 +97,8 @@ export default class RegisterForm extends Component {
             </form>
         )
     }
+}
+
+RegisterForm.propTypes = {
+    submit : PropTypes.func.isRequired
 }
